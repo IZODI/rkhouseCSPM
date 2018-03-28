@@ -64,6 +64,7 @@ def find_pokemon_id(name):
 @bot.command()
 async def example():
     await bot.send_message(discord.Object(id=log_channel), "`example: ^raid \"Canandagua National Bank Clock Tower\" Lugia 5 45 20000`")
+    await bot.send_message(discord.Object(id=log_channel), "`gym-name pokemon-name level time-remaining cp`")
 
 #raid function
 @bot.command(pass_context=True)
@@ -91,8 +92,8 @@ async def raid(ctx, arg, arg2, arg3, arg4, arg5):#arg = gym name, arg2 = pokemon
             await bot.send_message(discord.Object(id=log_channel), str(ctx.message.author.name) + ' said there was a ' + str(arg2) +
                                    ' raid going on at ' + str(arg)) and print(str(ctx.message.author.name) + ' said there was a ' + str(arg2) +
                                    ' raid going on at ' + str(arg))
-            await bot.send_message(discord.Object(id=log_channel), str(ctx.message.author.name) + " VALUES ("+str('{}').format(gym_id[1])+", "+str(arg3)+", "+str("'{}'").format(time)+", "+str("'{}'").format(time)+", "+str("'{}'").format(now)+", "+str(pokemon_id)+", "+str(arg5)+", 1, 1, "+str("'{}'").format(time)+");")
-            await bot.send_message(discord.Object(id=log_channel), str(ctx.message.author.name) + " INSERT INTO raid(gym_id, level, spawn, start, end, pokemon_id, cp, move_1, move_2, last_scanned)")
+#debug      await bot.send_message(discord.Object(id=log_channel), str(ctx.message.author.name) + " VALUES ("+str('{}').format(gym_id[1])+", "+str(arg3)+", "+str("'{}'").format(time)+", "+str("'{}'").format(time)+", "+str("'{}'").format(now)+", "+str(pokemon_id)+", "+str(arg5)+", 1, 1, "+str("'{}'").format(time)+");")
+#debug      await bot.send_message(discord.Object(id=log_channel), str(ctx.message.author.name) + " INSERT INTO raid(gym_id, level, spawn, start, end, pokemon_id, cp, move_1, move_2, last_scanned)")
 
         except:
             database.rollback()
