@@ -60,15 +60,6 @@ def find_pokemon_id(name):
                 return int(k)
         return 0
 
-#def get_time(minute):
-
-    #now = datetime.now().strftime("%a, %d %b %Y %H:%M:%S +0000")
-    #future = now + timedelta(minutes=minute)
-    #return calendar.timegm(future.timetuple())
-    #future = time.time()
-    #future = datetime.datetime.utcnow() + datetime.timedelta(minutes=minute)
-    #return calendar.timegm(future.asctime("%a, %d %b %Y %H:%M:%S +0000"))
-
 #raid function
 @bot.command(pass_context=True)
 async def raid(ctx, arg, arg2, arg3, arg4, arg5):#arg = gym name, arg2 = pokemon name, arg3 = level, arg4 = time remaining, arg5 = cp
@@ -77,7 +68,6 @@ async def raid(ctx, arg, arg2, arg3, arg4, arg5):#arg = gym name, arg2 = pokemon
 
         now = datetime.datetime.now() + timedelta(minutes=int(arg4))
         time = datetime.datetime.now() + timedelta(minutes=1)
-        #future = now.strftime("%a, %d %b %Y %H:%M:%S +0000")
 
         try:
             cursor.execute("SELECT gym_id FROM gymdetails WHERE name LIKE '" + str(arg) + "%';")
