@@ -7,8 +7,10 @@ import asyncio
 from pokemonlist import pokemon, pokejson
 from config import bot_channel, token, host, user, password, database, website, log_channel
 import datetime
+from datetime import timedelta
 import calendar
 import logging
+import time
 
 ## CREATED BY @rkhous#1447
 
@@ -26,13 +28,17 @@ cursor = database.cursor()
 
 @bot.event
 async def on_ready():
+    print()
+    print()
     print("Login successful.")
     print("-----------------")
-    print("CSPM by rkhous")
+    print("CSPM by @rkhous#1447")
     print("-----------------")
-    print(str(bot.user))
+    print("BotUser = "+str(bot.user))
     print("-----------------")
     print("-----started-----")
+    print()
+    print()
 
 
 def find_pokemon_id(name):
@@ -55,14 +61,17 @@ def find_pokemon_id(name):
         return 0
 
 def get_time(minute):
-    future = datetime.datetime.utcnow() + datetime.timedelta(minutes=minute)
-    return calendar.timegm(future.timetuple())
+
+    future = time.time()
+    #future = datetime.datetime.utcnow() + datetime.timedelta(minutes=minute)
+    return calendar.timegm(future.asctime("%a, %d %b %Y %H:%M:%S +0000"))
 
 #raid function
 @bot.command(pass_context=True)
 async def raid(ctx, arg, arg2, arg3, arg4, arg5):#arg = gym name, arg2 = pokemon name, arg3 = level, arg4 = time remaining, arg5 = cp
     if ctx and ctx.message.channel.id == str(bot_channel) and str(arg2).lower() in pokemon:
         pokemon_id = find_pokemon_id(str(arg2).capitalize())
+
         time = get_time(int(arg4))
         try:
             cursor.execute("SELECT gym_id FROM gymdetails WHERE name LIKE '" + str(arg) + "%';")
@@ -73,7 +82,7 @@ async def raid(ctx, arg, arg2, arg3, arg4, arg5):#arg = gym name, arg2 = pokemon
                            "gym_id, level, spawn, start, "
                            "end, pokemon_id, cp, move_1, "
                            "move_2, last_scanned)"
-                           "VALUES " +(str(gym_id[1])), str(arg3), + "'2018-03-27 05:00:00.880807', '2018-03-27 05:00:00.880807'," + str(arg4), str(pokemon_id), str(arg5), 1, 1, + "'2018-03-27 05:00:00.880807');")
+                           "VALUES ("+str('{}').format(gym_id[1])+", "+str(arg3)+", '2018-03-27 05:00:00.880807', '2018-03-27 05:00:00.880807', "+str(time)+", "+str(pokemon_id)+", "+str(arg5)+", 1, 1, '2018-03-27 05:00:00.880807');")
             database.commit()
             await bot.say('Successfully added your raid to the live map.')
             await bot.send_message(discord.Object(id=log_channel), str(ctx.message.author.name) + ' said there was a ' + str(arg2) +
