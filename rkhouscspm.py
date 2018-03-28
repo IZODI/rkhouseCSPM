@@ -60,14 +60,21 @@ def find_pokemon_id(name):
                 return int(k)
         return 0
 
+
+@bot.command()
+async def example():
+    await bot.send_message(discord.Object(id=log_channel), "`example: ^raid \"Canandagua National Bank Clock Tower\" Lugia 5 45 20000`")
+
 #raid function
 @bot.command(pass_context=True)
 async def raid(ctx, arg, arg2, arg3, arg4, arg5):#arg = gym name, arg2 = pokemon name, arg3 = level, arg4 = time remaining, arg5 = cp
     if ctx and ctx.message.channel.id == str(bot_channel) and str(arg2).lower() in pokemon:
+        """example: ^raid "Canandagua National Bank Clock Tower" Lugia 5 45 20000"""
+
         pokemon_id = find_pokemon_id(str(arg2).capitalize())
 
-        now = datetime.datetime.now() + timedelta(minutes=int(arg4))
-        time = datetime.datetime.now() + timedelta(minutes=1)
+        now = datetime.datetime.utcnow() + timedelta(minutes=int(arg4))
+        time = datetime.datetime.utcnow() + timedelta(minutes=1)
 
         try:
             cursor.execute("SELECT gym_id FROM gymdetails WHERE name LIKE '" + str(arg) + "%';")
@@ -92,7 +99,5 @@ async def raid(ctx, arg, arg2, arg3, arg4, arg5):#arg = gym name, arg2 = pokemon
             await bot.say('Unsuccesful in database query, your raid was not added to the live map.')
             tb = traceback.print_exc(file=sys.stdout)
             print(tb)
-
-
 
 bot.run(token)
