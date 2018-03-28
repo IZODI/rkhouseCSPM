@@ -6,6 +6,6 @@ log_channel = 'channelID' #Add a log channel, copy the ID here, give this bot ac
 
 #####DATABASE, limited to MySQL and MariaDB#####
 host = 'localhost'  #host
-user = 'root'  #database user
+user = 'rocket'  #database user
 password = 'password'  #database password
-database = 'Hydro'  #database name
+database = 'rocketmapdb'  #database name
