@@ -1,3 +1,4 @@
+import sys, traceback
 import configparser
 import MySQLdb
 import discord
@@ -32,7 +33,6 @@ async def on_ready():
     print(str(bot.user))
     print("-----------------")
     print("-----started-----")
-
 
 
 def find_pokemon_id(name):
@@ -82,5 +82,9 @@ async def raid(ctx, arg, arg2, arg3, arg4, arg5):#arg = gym name, arg2 = pokemon
         except:
             database.rollback()
             await bot.say('Unsuccesful in database query, your raid was not added to the live map.')
+            tb = traceback.print_exc(file=sys.stdout)
+            print(tb)
+
+
 
 bot.run(token)
