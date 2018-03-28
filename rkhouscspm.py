@@ -38,10 +38,8 @@ async def on_ready():
     print("BotUser = "+str(bot.user))
     print("-----------------")
     print("-----started-----")
-    print()
-    now = datetime.datetime.now() + timedelta(minutes=29)
-    print(now)
-
+    print("The time is now")
+    print(datetime.datetime.now())
 
 def find_pokemon_id(name):
     if name == 'Nidoran-F':
@@ -78,7 +76,7 @@ async def raid(ctx, arg, arg2, arg3, arg4, arg5):#arg = gym name, arg2 = pokemon
         pokemon_id = find_pokemon_id(str(arg2).capitalize())
 
         now = datetime.datetime.now() + timedelta(minutes=int(arg4))
-        #time = ('{}').format(now)
+        time = datetime.datetime.now() + timedelta(minutes=1)
         #future = now.strftime("%a, %d %b %Y %H:%M:%S +0000")
 
         try:
@@ -90,12 +88,15 @@ async def raid(ctx, arg, arg2, arg3, arg4, arg5):#arg = gym name, arg2 = pokemon
                            "gym_id, level, spawn, start, "
                            "end, pokemon_id, cp, move_1, "
                            "move_2, last_scanned)"
-                           "VALUES ("+str('{}').format(gym_id[1])+", "+str(arg3)+", '2018-03-27 05:00:00.880807', '2018-03-27 05:00:00.880807', "+str("'{}'").format(now)+", "+str(pokemon_id)+", "+str(arg5)+", 1, 1, '2018-03-27 05:00:00.880807');")
+                           "VALUES ("+str('{}').format(gym_id[1])+", "+str(arg3)+", "+str("'{}'").format(time)+", "+str("'{}'").format(time)+", "+str("'{}'").format(now)+", "+str(pokemon_id)+", "+str(arg5)+", 1, 1, "+str("'{}'").format(time)+");")
             database.commit()
             await bot.say('Successfully added your raid to the live map.')
             await bot.send_message(discord.Object(id=log_channel), str(ctx.message.author.name) + ' said there was a ' + str(arg2) +
                                    ' raid going on at ' + str(arg)) and print(str(ctx.message.author.name) + ' said there was a ' + str(arg2) +
                                    ' raid going on at ' + str(arg))
+            await bot.send_message(discord.Object(id=log_channel), str(ctx.message.author.name) + " VALUES ("+str('{}').format(gym_id[1])+", "+str(arg3)+", "+str("'{}'").format(time)+", "+str("'{}'").format(time)+", "+str("'{}'").format(now)+", "+str(pokemon_id)+", "+str(arg5)+", 1, 1, "+str("'{}'").format(time)+");")
+            await bot.send_message(discord.Object(id=log_channel), str(ctx.message.author.name) + " INSERT INTO raid(gym_id, level, spawn, start, end, pokemon_id, cp, move_1, move_2, last_scanned)")
+
         except:
             database.rollback()
             await bot.say('Unsuccesful in database query, your raid was not added to the live map.')
