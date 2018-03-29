@@ -62,12 +62,6 @@ def find_pokemon_id(name):
                 return int(k)
         return 0
 
-
-@bot.command()
-async def example():
-    await bot.send_message(discord.Object(id=log_channel), "`example: ^raid \"Canandagua National Bank Clock Tower\" Lugia 5 45 20000`")
-    await bot.send_message(discord.Object(id=log_channel), "`gym-name pokemon-name level time-remaining cp`")
-
 #raid function
 @bot.command(pass_context=True)
 async def raid(ctx, arg, arg2, arg3, arg4, arg5):#arg = gym name, arg2 = pokemon name, arg3 = level, arg4 = time remaining, arg5 = cp
@@ -113,5 +107,16 @@ async def gym(ctx, arg):
     msg = "`{}`".format(gym_name)
     database.commit()
     await bot.send_message(discord.Object(id=log_channel), msg)
+
+@bot.command()
+async def commands():
+    await bot.say("```^gym -- show gyms like name provided, also a way to know if they are in the db\n"
+                  "^raid -- input raid into database so that it shows on map for all to see\n"
+                  "^example -- shows an example of an input```")
+
+@bot.command()
+async def example():
+    await bot.say("```^raid \"Canandagua National Bank Clock Tower\" Lugia 5 45 20000`\n"
+                  "'gym-name' poke-name level time-remaining cp```")
 
 bot.run(token)
