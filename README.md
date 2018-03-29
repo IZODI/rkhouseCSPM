@@ -7,8 +7,7 @@
 - Set up config.py
 - Run with: python3 rkhouscspm.py
 
-You may need
-    pip3 install mysqlclient
+You may need `pip3 install mysqlclient`
 
 
 - Note: Gym names in raids do not have to be completely filled in, just enough so MySQL can find a single gym.
