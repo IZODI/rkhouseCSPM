@@ -109,9 +109,9 @@ async def raid(ctx, arg, arg2, arg3, arg4, arg5):#arg = gym name, arg2 = pokemon
 
 @bot.command(pass_context=True)
 async def gym(ctx, arg):
-    cursor.execute("SELECT gym_id FROM gymdetails WHERE name LIKE '" + str(arg) + "%';")
-    gym_num = str(cursor.fetchall())
-    msg = "`{}`".format(gym_num)
+    cursor.execute("SELECT name FROM gymdetails WHERE name LIKE '" + str(arg) + "%';")
+    gym_name = str(cursor.fetchall())
+    msg = "`{}`".format(gym_name)
     database.commit()
     await bot.send_message(discord.Object(id=log_channel), msg)
 
