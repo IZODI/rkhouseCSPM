@@ -1,3 +1,4 @@
+import json
 import subprocess
 import os
 import sys, traceback
@@ -23,10 +24,9 @@ handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w'
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
 
-bot = commands.Bot(command_prefix = '^')#set prefix to .
+bot = commands.Bot(command_prefix = '^')#set prefix
 
 database = MySQLdb.connect(host,user,password,database)
-
 cursor = database.cursor()
 
 @bot.event
@@ -62,14 +62,19 @@ def find_pokemon_id(name):
                 return int(k)
         return 0
 
+def find_pokecp(name):
+    with open('pokecp.json') as f:
+        data = json.load(f)
+        return (data[str(name).capitalize()])
+
 #raid function
 @bot.command(pass_context=True)
-async def raid(ctx, arg, arg2, arg3, arg4, arg5):#arg = gym name, arg2 = pokemon name, arg3 = level, arg4 = time remaining, arg5 = cp
+async def raid(ctx, arg, arg2, arg3, arg4):#arg = gym name, arg2 = pokemon name, arg3 = level, arg4 = time remaining
     if ctx and ctx.message.channel.id == str(bot_channel) and str(arg2).lower() in pokemon:
-        """example: ^raid "Canandagua National Bank Clock Tower" Lugia 5 45 20000"""
+        """example: ^raid "Canandagua National Bank Clock Tower" Lugia 5 45"""
 
         pokemon_id = find_pokemon_id(str(arg2).capitalize())
-
+        pokecp = find_pokecp(str(arg2).capitalize())
         now = datetime.datetime.utcnow() + timedelta(minutes=int(arg4))
         time = datetime.datetime.utcnow() + timedelta(minutes=1)
 
@@ -82,7 +87,7 @@ async def raid(ctx, arg, arg2, arg3, arg4, arg5):#arg = gym name, arg2 = pokemon
                            "gym_id, level, spawn, start, "
                            "end, pokemon_id, cp, move_1, "
                            "move_2, last_scanned)"
-                           " VALUES ("+str('{}').format(gym_id[1])+", "+str(arg3)+", "+str("'{}'").format(time)+", "+str("'{}'").format(time)+", "+str("'{}'").format(now)+", "+str(pokemon_id)+", "+str(arg5)+", 1, 1, "+str("'{}'").format(time)+");")
+                           " VALUES ("+str('{}').format(gym_id[1])+", "+str(arg3)+", "+str("'{}'").format(time)+", "+str("'{}'").format(time)+", "+str("'{}'").format(now)+", "+str(pokemon_id)+", "+str(pokecp)+", 1, 1, "+str("'{}'").format(time)+");")
                            #"VALUES (%s, %s, "+str("'{}'").format(time)+", "+str("'{}'").format(time)+", "+str("'{}'").format(now)+", %s, %s, 1, 1, "+str("'{}'").format(time)+");", (str(gym_id[1]), str(pokemon_id), str(arg3), str(arg5)))
             database.commit()
             await bot.say('Successfully added your raid to the live map.')
@@ -95,7 +100,7 @@ async def raid(ctx, arg, arg2, arg3, arg4, arg5):#arg = gym name, arg2 = pokemon
         except:
             database.rollback()
             await bot.say('Unsuccesful in database query, your raid was not added to the live map.')
-            await bot.say("aint no `{}` round here!".format(arg))
+            await bot.say("Could not find `{}` in my database. Please check your gym name. \nuse `^gym gym-name` to try and look it up".format(arg))
             tb = traceback.print_exc(file=sys.stdout)
             print(tb)
 
@@ -110,14 +115,20 @@ async def gym(ctx, arg):
 
 @bot.command()
 async def commands():
-    await bot.say("```^gym -- show gyms like name provided, also a way to know if they are in the db. Example: ^gym \"Calvary Chapel Of The Finger Lakes\"\n"
-                  "^raid -- input raid into database so that it shows on map for all to see\n"
-                  "^example -- shows an example of an input\n"
+    await bot.say("```^gym -- show gyms like name provided, also a way to know if they are in the db.\n       Example: ^gym \"Calvary Chapel Of The Finger Lakes\"\n\n"
+                  "^raid -- input raid into database so that it shows on map for all to see\n\n"
+                  "^example -- shows an example of an input\n\n"
                   "gym names must be in \"quotes\"```")
 
 @bot.command()
 async def example():
-    await bot.say("```^raid \"Canandagua National Bank Clock Tower\" Lugia 5 45 20000`\n"
-                  "'gym-name' poke-name level time-remaining cp```")
+    await bot.say("```^raid \"Canandagua National Bank Clock Tower\" Lugia 5 45\n"
+                  "'gym-name' poke-name level time-remaining```")
+
+@bot.command()
+async def cp(arg):
+    with open('pokecp.json') as f:
+        data = json.load(f)
+        await bot.say(data[str(arg).capitalize()])
 
 bot.run(token)
