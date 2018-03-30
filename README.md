@@ -8,6 +8,7 @@
 - Run with: python3 rkhouscspm.py
 
 You may need `pip3 install mysqlclient`
+Error 2006: `SET GLOBAL max_allowed_packet=10485760;`
 
 
 - Note: Gym names in raids do not have to be completely filled in, just enough so MySQL can find a single gym.

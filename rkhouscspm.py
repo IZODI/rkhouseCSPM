@@ -110,9 +110,10 @@ async def gym(ctx, arg):
 
 @bot.command()
 async def commands():
-    await bot.say("```^gym -- show gyms like name provided, also a way to know if they are in the db\n"
+    await bot.say("```^gym -- show gyms like name provided, also a way to know if they are in the db. Example: ^gym \"Calvary Chapel Of The Finger Lakes\"\n"
                   "^raid -- input raid into database so that it shows on map for all to see\n"
-                  "^example -- shows an example of an input```")
+                  "^example -- shows an example of an input\n"
+                  "gym names must be in \"quotes\"```")
 
 @bot.command()
 async def example():
