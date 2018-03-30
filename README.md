@@ -18,7 +18,7 @@
     ^gym -- show gyms like name provided, also a way to know if they are in the db
     ^raid -- input raid into database so that it shows on map for all to see
     ^example -- shows an example of an input
-    ^info
+    ^commands -- shows the commands
 
 ## Made by @rkhous#1447
 
