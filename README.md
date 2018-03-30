@@ -19,6 +19,7 @@
     ^raid -- input raid into database so that it shows on map for all to see
     ^example -- shows an example of an input
     ^commands -- shows the commands
+    ^raidcp -- show the raid cp of specified mon
 
 ## Made by @rkhous#1447
 
