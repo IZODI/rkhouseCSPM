@@ -111,14 +111,15 @@ async def gym(ctx, arg):
     gym_name = str(cursor.fetchall())
     msg = "`{}`".format(gym_name)
     database.commit()
-    await bot.send_message(discord.Object(id=log_channel), msg)
+    await bot.say(msg)
 
 @bot.command()
 async def commands():
-    await bot.say("```^gym -- show gyms like name provided, also a way to know if they are in the db.\n       Example: ^gym \"Calvary Chapel Of The Finger Lakes\"\n\n"
+    await bot.say("```^gym <\'gymname\'> -- show gyms like name provided, also a way to know if they are in the db.\n       Example: ^gym \"Calvary Chapel Of The Finger Lakes\"\n\n"
                   "^raid -- input raid into database so that it shows on map for all to see\n\n"
                   "^example -- shows an example of an input\n\n"
-                  "gym names must be in \"quotes\"```")
+                  "gym names must be in \"quotes\""
+                  "\n\n^raidcp <MON> -- shows the raid cp of specified mon```")
 
 @bot.command()
 async def example():
@@ -126,7 +127,7 @@ async def example():
                   "'gym-name' poke-name level time-remaining```")
 
 @bot.command()
-async def cp(arg):
+async def raidcp(arg):
     with open('pokecp.json') as f:
         data = json.load(f)
         await bot.say(data[str(arg).capitalize()])
