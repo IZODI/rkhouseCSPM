@@ -1,6 +1,5 @@
 # rkhousCSPM
 
-
 ## Crowd-Sourced PokeMap for RocketMap
 
 - Install discord.py using: python3 -m pip install -U discord.py
