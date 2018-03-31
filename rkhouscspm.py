@@ -108,11 +108,11 @@ async def raid(ctx, arg, arg2, arg3, arg4):#arg = gym name, arg2 = pokemon name,
 
 @bot.command(pass_context=True)
 async def gym(ctx, arg):
-    cursor.execute("SELECT name FROM gymdetails WHERE name LIKE '" + str(arg) + "%';")
-    gym_name = str(cursor.fetchall())
-    msg = "`{}`".format(gym_name)
-    database.commit()
-    await bot.say(msg)
+    cursor.execute("SELECT name FROM gymdetails WHERE name LIKE '%" + str(arg) + "%';")
+    #gym_name = str(cursor.fetchall())
+    gym_name = str(cursor.fetchone())
+    gym_name = gym_name.split("'")
+    await bot.say(str(gym_name[1]))
 
 @bot.command()
 async def commands():
@@ -135,9 +135,41 @@ async def raidcp(arg):
 
 @bot.command()
 async def version():
-        res = requests.get('https://pgorelease.nianticlabs.com/plfe/version')
-        await bot.say("```\nCurrently Forced API: " + (res.text) + "```")
+    res = requests.get('https://pgorelease.nianticlabs.com/plfe/version')
+    await bot.say("```\nCurrently Forced API: " + (res.text) + "```")
 
+@bot.command(pass_context=True)
+async def test(ctx, arg):
 
+    cursor.execute("SELECT gym_id FROM gymdetails WHERE name LIKE '" + str(arg) + "%';")
+    gym_id = str(cursor.fetchall())
+    gym_id = gym_id.split(',')
+    gym_id = gym_id[0].split('((')
+
+    cursor.execute("SELECT url FROM gymdetails WHERE gym_id LIKE '" + str(gym_id) + "%';")
+    image = str(cursor.fetchall())
+    #image = image.split(',')
+    #image = image[0].split("'")
+    #image = image[0].split("]")
+
+    cursor.execute("SELECT latitude FROM gym WHERE gym_id LIKE '" + str(gym_id) + "%';")
+    lat = str(cursor.fetchall())
+    #lat = lat.split(',')
+    #lat = lat[0].split('(')
+
+    cursor.execute("SELECT longitude FROM gym WHERE gym_id LIKE '" + str(gym_id) + "%';")
+    lon = str(cursor.fetchall())
+    #lon = lon.split(',')
+    #lon = lon[0].split('(')
+
+    cursor.execute("SELECT name FROM gymdetails WHERE name LIKE '" + str(arg) + "%';")
+    gym_title = str(cursor.fetchall())
+    #if '"' in gym_title:
+    #    gym_title = gym_title.split('"')
+    #elif "'" in gym_title:
+    #    gym_title = gym_title.split("'")
+
+    msg = "`{}{}{}{}{}`".format(gym_id, image, lat, lon, gym_title)
+    await bot.say(msg)
 
 bot.run(token)
