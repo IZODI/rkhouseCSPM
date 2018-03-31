@@ -109,10 +109,9 @@ async def raid(ctx, arg, arg2, arg3, arg4):#arg = gym name, arg2 = pokemon name,
 @bot.command(pass_context=True)
 async def gym(ctx, arg):
     cursor.execute("SELECT name FROM gymdetails WHERE name LIKE '%" + str(arg) + "%';")
-    #gym_name = str(cursor.fetchall())
-    gym_name = str(cursor.fetchone())
+    gym_name = str(cursor.fetchall())
     gym_name = gym_name.split("'")
-    await bot.say(str(gym_name[1]))
+    await bot.say("`"+str(gym_name)+"`")
 
 @bot.command()
 async def commands():
@@ -142,34 +141,35 @@ async def version():
 async def test(ctx, arg):
 
     cursor.execute("SELECT gym_id FROM gymdetails WHERE name LIKE '" + str(arg) + "%';")
-    gym_id = str(cursor.fetchall())
-    gym_id = gym_id.split(',')
-    gym_id = gym_id[0].split('((')
+    gym_id = str(cursor.fetchone())
+    gym_id = gym_id.split("'")
+    gym_id = str(gym_id[1])
 
     cursor.execute("SELECT url FROM gymdetails WHERE gym_id LIKE '" + str(gym_id) + "%';")
     image = str(cursor.fetchall())
-    #image = image.split(',')
-    #image = image[0].split("'")
-    #image = image[0].split("]")
+    image = image.split("'")
+    image = str(image[1])
 
     cursor.execute("SELECT latitude FROM gym WHERE gym_id LIKE '" + str(gym_id) + "%';")
     lat = str(cursor.fetchall())
-    #lat = lat.split(',')
-    #lat = lat[0].split('(')
+    lat = lat.split(",")
+    lat = str(lat[0])
 
     cursor.execute("SELECT longitude FROM gym WHERE gym_id LIKE '" + str(gym_id) + "%';")
     lon = str(cursor.fetchall())
-    #lon = lon.split(',')
-    #lon = lon[0].split('(')
+    lon = lon.split(",")
+    lon = str(lon[0])
 
     cursor.execute("SELECT name FROM gymdetails WHERE name LIKE '" + str(arg) + "%';")
     gym_title = str(cursor.fetchall())
+    gym_title = gym_title.split("'")
+    gym_title = str(gym_title[1])
     #if '"' in gym_title:
     #    gym_title = gym_title.split('"')
     #elif "'" in gym_title:
     #    gym_title = gym_title.split("'")
 
-    msg = "`{}{}{}{}{}`".format(gym_id, image, lat, lon, gym_title)
+    msg = "`{}\n{}\n{}\n{}\n{}`".format(gym_id, image, lat, lon, gym_title)
     await bot.say(msg)
 
 bot.run(token)
