@@ -1,3 +1,4 @@
+import requests
 import json
 import subprocess
 import os
@@ -131,5 +132,12 @@ async def raidcp(arg):
     with open('pokecp.json') as f:
         data = json.load(f)
         await bot.say(data[str(arg).capitalize()])
+
+@bot.command()
+async def version():
+        res = requests.get('https://pgorelease.nianticlabs.com/plfe/version')
+        await bot.say("```\nCurrently Forced API: " + (res.text) + "```")
+
+
 
 bot.run(token)
