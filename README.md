@@ -20,7 +20,7 @@
     ^commands -- shows the commands
     ^raidcp -- show the raid cp of specified mon
 
-- Mine does not do built in raid notifiers sent to discord as an embed. If you would like that version, see link below to rkhous's gitty.
+- Mine does not currently do built in raid notifiers sent to discord as an embed. It is currently being worked on on notifier branch.
 
 
 ## Made by @rkhous#1447
