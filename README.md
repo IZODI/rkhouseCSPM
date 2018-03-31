@@ -23,9 +23,6 @@
     ^commands -- shows the commands
     ^raidcp -- show the raid cp of specified mon
 
-- Mine does not do built in raid notifiers sent to discord as an embed. If you would like that version, see link below to rkhous's gitty.
-
-
 ## Made by @rkhous#1447
 
 [CSPM](https://github.com/rkhous/CSPM)
