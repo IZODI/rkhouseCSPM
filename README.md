@@ -1,3 +1,6 @@
+# Adding Notifier - Please stand by
+
+
 # rkhousCSPM
 
 ## Crowd-Sourced PokeMap for RocketMap
@@ -22,7 +25,6 @@
 
 - Mine does not do built in raid notifiers sent to discord as an embed. If you would like that version, see link below to rkhous's gitty.
 
-- Adding Notifier - Please stand by
 
 ## Made by @rkhous#1447
 
