@@ -162,12 +162,12 @@ async def test(ctx, arg):
 
     cursor.execute("SELECT name FROM gymdetails WHERE name LIKE '" + str(arg) + "%';")
     gym_title = str(cursor.fetchall())
-    gym_title = gym_title.split("'")
-    gym_title = str(gym_title[1])
-    #if '"' in gym_title:
-    #    gym_title = gym_title.split('"')
-    #elif "'" in gym_title:
-    #    gym_title = gym_title.split("'")
+    #gym_title = gym_title.split("'")
+    gym_title = str(gym_title)
+    if '"' in gym_title:
+        gym_title = gym_title[1].split('"')
+    elif "'" in gym_title:
+        gym_title = gym_title[1].split("'")
 
     msg = "`{}\n{}\n{}\n{}\n{}`".format(gym_id, image, lat, lon, gym_title)
     await bot.say(msg)
