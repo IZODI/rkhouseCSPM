@@ -17,6 +17,7 @@ import logging
 from datetime import time
 from datetime import date
 import datetime
+import random
 ## CREATED BY @rkhous#1447
 
 logger = logging.getLogger('discord')
@@ -112,11 +113,35 @@ async def raid(ctx, arg, arg2, arg3, arg4):#arg = gym name, arg2 = pokemon name,
             #await bot.send_message(discord.Object(id=log_channel), str(ctx.message.author.name) + " INSERT INTO raid(gym_id, level, spawn, start, end, pokemon_id, cp, move_1, move_2, last_scanned)")
 
         except:
+            database.connect()
             database.rollback()
             await bot.say('Unsuccesful in database query, your raid was not added to the live map.')
             await bot.say("Could not find `{}` in my database. Please check your gym name. \nuse `^gym gym-name` to try and look it up".format(arg))
             tb = traceback.print_exc(file=sys.stdout)
             print(tb)
+
+@bot.command(pass_context=True)
+async def spawn(ctx, arg, arg2, arg3):
+    if ctx and ctx.message.channel.id == str(bot_channel) and arg in pokemon:
+        pokemon_id = find_pokemon_id(str(arg).capitalize())
+        time = datetime.datetime.utcnow() + timedelta(minutes=15)
+        number = random.randint(1,200001)
+        try:
+            cursor.execute("REPLACE INTO pokemon(encounter_id, spawnpoint_id, pokemon_id, latitude, longitude, disappear_time, individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier, weight, height, gender, costume, form, weather_boosted_condition, last_modified)"
+                           "VALUES ("+str(number)+", "+str(number)+", "+str(pokemon_id)+", "+str(arg2)+", "+str(arg3)+", '"+str(time)+"', null, null, null, null, null, null, null, null, null, null, null, null, null, null);")
+
+            database.commit()
+            await bot.say('Successfully added your spawn to the live map.\n'
+                          '*Pokemon timers are automatically given 15 minutes since the timer is unknown.*')
+            #await bot.say("VALUES ("+str(number)+", "+str(number)+", "+str(pokemon_id)+", "+str(arg2)+", "+str(arg3)+", '"+str(time)+"', null, null, null, null, null, null, null, null, null, null, null, null, null, null);")
+            await bot.send_message(discord.Object(id=log_channel), str(ctx.message.author.name) + ' said there was a wild ' + str(arg) +
+                                   ' at these coordinates: ' + str(arg2) + ', ' + str(arg3))  and print(str(ctx.message.author.name) + ' said there was a wild ' + str(arg) +
+                                   ' at these coordinates: ' + str(arg2) + ', ' + str(arg3))
+        except:
+            tb = traceback.print_exc(file=sys.stdout)
+            print(tb)
+            await bot.say("VALUES ("+str(number)+", "+str(number)+", "+str(pokemon_id)+", "+str(arg2)+", "+str(arg3)+", '"+str(time)+"', null, null, null, null, null, null, null, null, null, null, null, null, null, null);")
+            await bot.say('Unsuccessful in database query, your reported spawn was not added to the live map.')
 
 
 @bot.command(pass_context=True)
@@ -132,7 +157,8 @@ async def commands():
     await bot.say("```^gym <\'gymname\'> -- show gyms like name provided, also a way to know if they are in the db.\n       Example: ^gym \"Calvary Chapel Of The Finger Lakes\"\n\n"
                   "^raid -- input raid into database so that it shows on map for all to see\n\n"
                   "^example -- shows an example of an input\n\n"
-                  "gym names must be in \"quotes\""
+                  "^spawn -- creates a spawn on map. timer set to 15 min as it is unknown\n     Example: ^spawn mew 42.947890 -77.338575\n\n"
+                  "gym names must be in \"quotes\"\n"
                   "\n\n^raidcp <MON> -- shows the raid cp of specified mon```")
 
 @bot.command()
