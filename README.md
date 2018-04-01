@@ -22,6 +22,7 @@
     ^example -- shows an example of an input
     ^commands -- shows the commands
     ^raidcp -- show the raid cp of specified mon
+    ^spawn -- adds spawn of specified pokemon to map. Timer set to 15 minutes as it is unknown.
 
 ## Made by @rkhous#1447
 
