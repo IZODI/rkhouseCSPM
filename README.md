@@ -31,3 +31,6 @@
 
 
 [Support my Learning!](https://www.paypal.me/zod5578)
+
+
+[ZOD's Discord for help... maybe](https://discord.gg/jNPzJKT)
