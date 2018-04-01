@@ -125,10 +125,11 @@ async def spawn(ctx, arg, arg2, arg3):
     if ctx and ctx.message.channel.id == str(bot_channel) and arg in pokemon:
         pokemon_id = find_pokemon_id(str(arg).capitalize())
         time = datetime.datetime.utcnow() + timedelta(minutes=15)
+        time2 = datetime.datetime.utcnow() + timedelta()
         number = random.randint(1,200001)
         try:
             cursor.execute("REPLACE INTO pokemon(encounter_id, spawnpoint_id, pokemon_id, latitude, longitude, disappear_time, individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier, weight, height, gender, costume, form, weather_boosted_condition, last_modified)"
-                           "VALUES ("+str(number)+", "+str(number)+", "+str(pokemon_id)+", "+str(arg2)+", "+str(arg3)+", '"+str(time)+"', null, null, null, null, null, null, null, null, null, null, null, null, null, null);")
+                           "VALUES ("+str(number)+", "+str(number)+", "+str(pokemon_id)+", "+str(arg2)+", "+str(arg3)+", '"+str(time)+"', null, null, null, null, null, null, null, null, null, null, null, null, null, '"+str(time2)+"');")
 
             database.commit()
             await bot.say('Successfully added your spawn to the live map.\n'
