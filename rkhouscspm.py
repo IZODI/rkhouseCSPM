@@ -17,6 +17,7 @@ import logging
 from datetime import time
 from datetime import date
 import datetime
+import random
 ## CREATED BY @rkhous#1447
 
 logger = logging.getLogger('discord')
