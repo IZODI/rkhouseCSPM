@@ -105,6 +105,52 @@ async def raid(ctx, arg, arg2, arg3, arg4):#arg = gym name, arg2 = pokemon name,
             tb = traceback.print_exc(file=sys.stdout)
             print(tb)
 
+@bot.command(pass_context=True)
+async def spawn(ctx, arg, arg2, arg3):
+    if ctx and ctx.message.channel.id == str(bot_channel) and arg in pokemon:
+        pokemon_id = find_pokemon_id(str(arg).capitalize())
+        time = datetime.datetime.utcnow() + timedelta(minutes=15)
+        time2 = datetime.datetime.utcnow() + timedelta()
+        number = random.randint(1,200001)
+        try:
+            cursor.execute("REPLACE INTO pokemon(encounter_id, spawnpoint_id, pokemon_id, latitude, longitude, disappear_time, individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier, weight, height, gender, costume, form, weather_boosted_condition, last_modified)"
+                           "VALUES ("+str(number)+", "+str(number)+", "+str(pokemon_id)+", "+str(arg2)+", "+str(arg3)+", '"+str(time)+"', null, null, null, null, null, null, null, null, null, null, null, null, null, '"+str(time2)+"');")
+
+            database.commit()
+            await bot.say('Successfully added your spawn to the live map.\n'
+                          '*Pokemon timers are automatically given 15 minutes since the timer is unknown.*')
+            #await bot.say("VALUES ("+str(number)+", "+str(number)+", "+str(pokemon_id)+", "+str(arg2)+", "+str(arg3)+", '"+str(time)+"', null, null, null, null, null, null, null, null, null, null, null, null, null, null);")
+            await bot.send_message(discord.Object(id=log_channel), str(ctx.message.author.name) + ' said there was a wild ' + str(arg) +
+                                   ' at these coordinates: ' + str(arg2) + ', ' + str(arg3))  and print(str(ctx.message.author.name) + ' said there was a wild ' + str(arg) +
+                                   ' at these coordinates: ' + str(arg2) + ', ' + str(arg3))
+        except:
+            tb = traceback.print_exc(file=sys.stdout)
+            print(tb)
+            await bot.say("VALUES ("+str(number)+", "+str(number)+", "+str(pokemon_id)+", "+str(arg2)+", "+str(arg3)+", '"+str(time)+"', null, null, null, null, null, null, null, null, null, null, null, null, null, null);")
+            await bot.say('Unsuccessful in database query, your reported spawn was not added to the live map.')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @bot.command(pass_context=True)
 async def gym(ctx, arg):
