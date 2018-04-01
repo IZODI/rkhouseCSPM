@@ -129,29 +129,6 @@ async def spawn(ctx, arg, arg2, arg3):
             await bot.say("VALUES ("+str(number)+", "+str(number)+", "+str(pokemon_id)+", "+str(arg2)+", "+str(arg3)+", '"+str(time)+"', null, null, null, null, null, null, null, null, null, null, null, null, null, null);")
             await bot.say('Unsuccessful in database query, your reported spawn was not added to the live map.')
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @bot.command(pass_context=True)
 async def gym(ctx, arg):
     cursor.execute("SELECT name FROM gymdetails WHERE name LIKE '%" + str(arg) + "%';")
