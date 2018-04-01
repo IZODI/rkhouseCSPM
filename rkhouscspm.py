@@ -104,19 +104,22 @@ async def raid(ctx, arg, arg2, arg3, arg4):#arg = gym name, arg2 = pokemon name,
                            "move_2, last_scanned)"
                            " VALUES ("+str('{}').format(gym_id[1])+", "+str(arg3)+", "+str("'{}'").format(time)+", "+str("'{}'").format(time)+", "+str("'{}'").format(now)+", "+str(pokemon_id)+", "+str(pokecp)+", 1, 1, "+str("'{}'").format(time)+");")
                            #"VALUES (%s, %s, "+str("'{}'").format(time)+", "+str("'{}'").format(time)+", "+str("'{}'").format(now)+", %s, %s, 1, 1, "+str("'{}'").format(time)+");", (str(gym_id[1]), str(pokemon_id), str(arg3), str(arg5)))
+            cursor.execute("UPDATE gym SET last_modified = '"+str(time)+"', last_scanned = '"+str(time)+"' WHERE gym_id = "+str(gym_id[1])+";")
             database.commit()
             await bot.say('Successfully added your raid to the live map.')
             await bot.send_message(discord.Object(id=log_channel), str(ctx.message.author.name) + ' said there was a ' + str(arg2) +
                                    ' raid going on at ' + str(arg)) and print(str(ctx.message.author.name) + ' said there was a ' + str(arg2) +
                                    ' raid going on at ' + str(arg))
-            #await bot.send_message(discord.Object(id=log_channel), str(ctx.message.author.name) + " VALUES ("+str('{}').format(gym_id[1])+", "+str(arg3)+", "+str("'{}'").format(time)+", "+str("'{}'").format(time)+", "+str("'{}'").format(now)+", "+str(pokemon_id)+", "+str(arg5)+", 1, 1, "+str("'{}'").format(time)+");")
-            #await bot.send_message(discord.Object(id=log_channel), str(ctx.message.author.name) + " INSERT INTO raid(gym_id, level, spawn, start, end, pokemon_id, cp, move_1, move_2, last_scanned)")
+            #await bot.say("VALUES ("+str('{}').format(gym_id[1])+", "+str(arg3)+", "+str("'{}'").format(time)+", "+str("'{}'").format(time)+", "+str("'{}'").format(now)+", "+str(pokemon_id)+", "+str(pokecp)+", 1, 1, "+str("'{}'").format(time)+");")
+            #await bot.say("UPDATE gym SET last_modified = '"+str(time)+"', last_scanned = '"+str(time)+"' WHERE gym_id = "+str(gym_id[1])+";")
 
         except:
-            database.connect()
+            #database.connect()
             database.rollback()
             await bot.say('Unsuccesful in database query, your raid was not added to the live map.')
             await bot.say("Could not find `{}` in my database. Please check your gym name. \nuse `^gym gym-name` to try and look it up".format(arg))
+            await bot.say("VALUES ("+str('{}').format(gym_id[1])+", "+str(arg3)+", "+str("'{}'").format(time)+", "+str("'{}'").format(time)+", "+str("'{}'").format(now)+", "+str(pokemon_id)+", "+str(pokecp)+", 1, 1, "+str("'{}'").format(time)+");")
+            await bot.say("UPDATE gym SET last_modified = '"+str(time)+"', last_scanned = '"+str(time)+"' WHERE gym_id = "+str(gym_id[1])+";")
             tb = traceback.print_exc(file=sys.stdout)
             print(tb)
 
