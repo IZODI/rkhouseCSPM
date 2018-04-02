@@ -29,6 +29,7 @@ logger.addHandler(handler)
 bot = commands.Bot(command_prefix = '^')#set prefix
 
 database = MySQLdb.connect(host,user,password,database)
+database.ping(True)
 cursor = database.cursor()
 
 @bot.event
