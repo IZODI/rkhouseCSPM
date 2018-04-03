@@ -46,19 +46,6 @@ async def on_ready():
     print("The time is now")
     print(datetime.datetime.now())
 
-#  def connect(self):
-#    database = MySQLdb.connect(host,user,password,database)
-#
-#  def query(self, sql):
-#    try:
-#      cursor = database.cursor()
-#      cursor.execute(sql)
-#    except (AttributeError, MySQLdb.OperationalError):
-#      database.connect()
-#      cursor = database.cursor()
-#      cursor.execute(sql)
-#    return cursor
-
 def find_pokemon_id(name):
     if name == 'Nidoran-F':
         return 29
