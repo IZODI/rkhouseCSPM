@@ -29,7 +29,7 @@
 
 ## Made by @rkhous#1447
 
-[CSPM](https://github.com/rkhous/CSPM)
+[CSPM For Monocle](https://github.com/rkhous/CSPM)
 
 
 [Support The Build!](https://www.paypal.me/zod5578)
