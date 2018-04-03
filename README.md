@@ -24,6 +24,9 @@
 - Mine does not currently do built in raid notifiers sent to discord as an embed. It is currently being worked on on notifier branch.
 
 
+[Use with NovaBot to get updates to channels of things you report](https://github.com/novskey/novabot/tree/wip)
+
+
 ## Made by @rkhous#1447
 
 [CSPM](https://github.com/rkhous/CSPM)
