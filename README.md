@@ -2,9 +2,9 @@
 
 ## Crowd-Sourced PokeMap for RocketMap
 
-- Install discord.py using: python3 -m pip install -U discord.py
-- Set up config.py
-- Run with: python3 rkhouscspm.py
+- Install discord.py using: `python3 -m pip install -U discord.py`
+- Copy `config.py.example` to `config.py`. Then edit it and make your changes.
+- Run with: `python3 rkhouscspm.py`
 
 - You may need `pip3 install mysqlclient`
 
