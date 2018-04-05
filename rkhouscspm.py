@@ -45,6 +45,8 @@ async def on_ready():
     print("-----started-----")
     print("The time is now")
     print(datetime.datetime.now())
+    print('Use this link to invite {}:'.format(bot.user.name))
+    print('https://discordapp.com/oauth2/authorize?client_id={}&scope=bot'.format(bot.user.id))
 
 def find_pokemon_id(name):
     if name == 'Nidoran-F':
