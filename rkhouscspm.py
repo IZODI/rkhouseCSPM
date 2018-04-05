@@ -9,7 +9,7 @@ import discord
 from discord.ext import commands
 import asyncio
 from pokemonlist import pokemon, pokejson
-from config import bot_channel, token, host, user, password, database, website, log_channel
+from config import bot_channel, token, host, user, password, database, website, log_channel, spawn_channel
 from datetime import datetime
 from datetime import timedelta
 import calendar
@@ -129,6 +129,21 @@ async def spawn(ctx, arg, arg2, arg3):
             await bot.send_message(discord.Object(id=log_channel), str(ctx.message.author.name) + ' said there was a wild ' + str(arg) +
                                    ' at these coordinates: ' + str(arg2) + ', ' + str(arg3))  and print(str(ctx.message.author.name) + ' said there was a wild ' + str(arg) +
                                    ' at these coordinates: ' + str(arg2) + ', ' + str(arg3))
+
+            spawn_embed=discord.Embed(
+                title='Click for directions!',
+                url=("https://www.google.com/maps/?q=" + str(arg2) + "," + str(arg3)),
+                description=('A wild ' + str(arg).capitalize() + ' is available!\n\n'
+                                                                 '**Time Remaining:** ~15 minutes.\n'
+                                                                 '**Spotted by:** ' + str(ctx.message.author.name) + '!'),
+                color=2ECC71
+            )
+            spawn_embed.set_image(url="http://www.pokestadium.com/sprites/xy/" + str(arg).lower() + ".gif")
+            await bot.send_message(discord.Object(id=spawn_channel), embed=spawn_embed)
+
+
+
+
         except:
             tb = traceback.print_exc(file=sys.stdout)
             print(tb)
