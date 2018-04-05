@@ -93,6 +93,7 @@ async def raid(ctx, arg, arg2, arg3, arg4):#arg = gym name, arg2 = pokemon name,
                            " VALUES ("+str('{}').format(gym_id[1])+", "+str(arg3)+", "+str("'{}'").format(time)+", "+str("'{}'").format(time)+", "+str("'{}'").format(now)+", "+str(pokemon_id)+", "+str(pokecp)+", 1, 1, "+str("'{}'").format(time)+");")
                            #"VALUES (%s, %s, "+str("'{}'").format(time)+", "+str("'{}'").format(time)+", "+str("'{}'").format(now)+", %s, %s, 1, 1, "+str("'{}'").format(time)+");", (str(gym_id[1]), str(pokemon_id), str(arg3), str(arg5)))
             cursor.execute("UPDATE gym SET last_modified = '"+str(time)+"', last_scanned = '"+str(time)+"' WHERE gym_id = "+str(gym_id[1])+";")
+            database.ping(True)
             database.commit()
             await bot.say('Successfully added your raid to the live map.')
             await bot.send_message(discord.Object(id=log_channel), str(ctx.message.author.name) + ' said there was a ' + str(arg2) +
@@ -122,6 +123,7 @@ async def spawn(ctx, arg, arg2, arg3):
             cursor.execute("REPLACE INTO pokemon(encounter_id, spawnpoint_id, pokemon_id, latitude, longitude, disappear_time, individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier, weight, height, gender, costume, form, weather_boosted_condition, last_modified)"
                            "VALUES ("+str(number)+", "+str(number)+", "+str(pokemon_id)+", "+str(arg2)+", "+str(arg3)+", '"+str(time)+"', null, null, null, null, null, null, null, null, null, null, null, null, null, '"+str(time2)+"');")
 
+            database.ping(True)
             database.commit()
             await bot.say('Successfully added your spawn to the live map.\n'
                           '*Pokemon timers are automatically given 15 minutes since the timer is unknown.*')
@@ -136,13 +138,10 @@ async def spawn(ctx, arg, arg2, arg3):
                 description=('A wild ' + str(arg).capitalize() + ' is available!\n\n'
                                                                  '**Time Remaining:** ~15 minutes.\n'
                                                                  '**Spotted by:** ' + str(ctx.message.author.name) + '!'),
-                color=2ECC71
+                color=3447003
             )
             spawn_embed.set_image(url="http://www.pokestadium.com/sprites/xy/" + str(arg).lower() + ".gif")
             await bot.send_message(discord.Object(id=spawn_channel), embed=spawn_embed)
-
-
-
 
         except:
             tb = traceback.print_exc(file=sys.stdout)
@@ -183,6 +182,41 @@ async def raidcp(arg):
 async def version():
         res = requests.get('https://pgorelease.nianticlabs.com/plfe/version')
         await bot.say("```\nCurrently Forced API: " + (res.text) + "```")
+
+@bot.command(pass_context=True)
+async def test(ctx, arg):
+
+    cursor.execute("SELECT gym_id FROM gymdetails WHERE name LIKE '" + str(arg) + "%';")
+    gym_id = str(cursor.fetchone())
+    gym_id = gym_id.split("'")
+    gym_id = str(gym_id[1])
+
+    cursor.execute("SELECT url FROM gymdetails WHERE gym_id LIKE '" + str(gym_id) + "%';")
+    image = str(cursor.fetchall())
+    image = image.split("'")
+    image = str(image[1])
+
+    cursor.execute("SELECT latitude FROM gym WHERE gym_id LIKE '" + str(gym_id) + "%';")
+    lat = str(cursor.fetchall())
+    lat = lat.split("(")
+    lat = str(lat[1]).split("'")
+
+    cursor.execute("SELECT longitude FROM gym WHERE gym_id LIKE '" + str(gym_id) + "%';")
+    lon = str(cursor.fetchall())
+    #lon = lon.split(",")
+    #lon = str(lon[0])
+
+    cursor.execute("SELECT name FROM gymdetails WHERE name LIKE '" + str(arg) + "%';")
+    gym_title = str(cursor.fetchall())
+    #gym_title = gym_title.split("'")
+    gym_title = str(gym_title)
+    #if '"' in gym_title:
+    #    gym_title = gym_title[1].split('"')
+    #elif "'" in gym_title:
+    #    gym_title = gym_title[1].split("'")
+
+    msg = "`{}\n{}\n{}\n{}\n{}`".format(gym_id, image, lat, lon, gym_title)
+    await bot.say(msg)
 
 
 
