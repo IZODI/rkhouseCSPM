@@ -2,8 +2,8 @@ bot_channel = 'channelID' #limit users to using the bot in this channel, right c
 token= 'TOKEN' #discord bot token (NOT bot ID)
 website = 'http://mapnamehere.com' #URL to map if you want the .map function to work, simply gives the users the website
 log_channel = 'channelID' #Add a log channel, copy the ID here, give this bot access to the channel.
-spawn_channel = 'channelID' #Add a spawn channel, copy the ID here, give the bot permission to this channel.
-raids_channel = 'channelID' #Add a raids channel, copy the ID here, give the bot permission to access this channel.
+spawn_channel = 'channel_id'
+raids_channel = 'channelID' 
 
 
 #####DATABASE, limited to MySQL and MariaDB#####
