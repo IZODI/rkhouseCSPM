@@ -82,7 +82,7 @@ async def raid(ctx, arg, arg2, arg3, arg4):#arg = gym name, arg2 = pokemon name,
         time = datetime.datetime.utcnow() + timedelta()
 
         try:
-            cursor.execute("SELECT gym_id FROM gymdetails WHERE name LIKE '" + str(arg) + "%';")
+            cursor.execute("SELECT gym_id FROM gymdetails WHERE name LIKE '%" + str(arg) + "%';")
             gym_id = str(cursor.fetchall())
             gym_id = gym_id.split(',')
             gym_id = gym_id[0].split('((')
@@ -152,7 +152,7 @@ async def spawn(ctx, arg, arg2, arg3):
 
 @bot.command(pass_context=True)
 async def gym(ctx, arg):
-    cursor.execute("SELECT name FROM gymdetails WHERE name LIKE '" + str(arg) + "%';")
+    cursor.execute("SELECT name FROM gymdetails WHERE name LIKE '%" + str(arg) + "%';")
     gym_name = str(cursor.fetchall())
     msg = "`{}`".format(gym_name)
     database.commit()
@@ -186,7 +186,7 @@ async def version():
 @bot.command(pass_context=True)
 async def test(ctx, arg):
 
-    cursor.execute("SELECT gym_id FROM gymdetails WHERE name LIKE '" + str(arg) + "%';")
+    cursor.execute("SELECT gym_id FROM gymdetails WHERE name LIKE '%" + str(arg) + "%';")
     gym_id = str(cursor.fetchone())
     gym_id = gym_id.split("'")
     gym_id = str(gym_id[1])
@@ -206,7 +206,7 @@ async def test(ctx, arg):
     #lon = lon.split(",")
     #lon = str(lon[0])
 
-    cursor.execute("SELECT name FROM gymdetails WHERE name LIKE '" + str(arg) + "%';")
+    cursor.execute("SELECT name FROM gymdetails WHERE name LIKE '%" + str(arg) + "%';")
     gym_title = str(cursor.fetchall())
     #gym_title = gym_title.split("'")
     gym_title = str(gym_title)
