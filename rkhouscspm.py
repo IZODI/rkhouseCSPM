@@ -106,7 +106,7 @@ async def raid(ctx, raid_gym_name, raid_pokemon_name, raid_level, raid_time_rema
                            "gym_id, level, spawn, start, "
                            "end, pokemon_id, cp, move_1, "
                            "move_2, last_scanned)"
-                           " VALUES ("+str('{}').format(gym_id[1])+", "+str(raid_level)+", "+str("'{}'").format(spawn)+", "+str("'{}'").format(start)+", "+str("'{}'").format(end)+", "+str(pokemon_id)+", "+str(pokecp)+", NULL, NULL, "+str("'{}'").format(time)+");")
+                           " VALUES ("+str('{}').format(gym_id[1])+", "+str(raid_level)+", "+str("'{}'").format(spawn)+", "+str("'{}'").format(start)+", "+str("'{}'").format(end)+", "+str(pokemon_id)+", "+str(pokecp)+", 1, 1, "+str("'{}'").format(time)+");")
             cursor.execute("UPDATE gym SET last_modified = '"+str(time)+"', last_scanned = '"+str(time)+"' WHERE gym_id = "+str(gym_id[1])+";")
             database.ping(True)
             database.commit()
@@ -173,17 +173,22 @@ async def gym(ctx, arg):
 
 @bot.command()
 async def commands():
-    await bot.say("```^gym <\'gymname\'> -- show gyms like name provided, also a way to know if they are in the db.\n       Example: ^gym \"Calvary Chapel Of The Finger Lakes\"\n\n"
+    await bot.say("```^gym <\"gymname\"> -- show gyms like name provided, also a way to know if they are in the db.\n"
                   "^raid -- input raid into database so that it shows on map for all to see\n\n"
                   "^example -- shows an example of an input\n\n"
-                  "^spawn -- creates a spawn on map. timer set to 15 min as it is unknown\n     Example: ^spawn mew 42.947890 -77.338575\n\n"
+                  "^spawn -- creates a spawn on map. timer set to 15 min as it is unknown\n"
                   "gym names must be in \"quotes\"\n"
-                  "\n\n^raidcp <MON> -- shows the raid cp of specified mon```")
+                  "\n\n^raidcp <MON> -- shows the raid cp of specified mon\n"
+                  "^version```")
 
 @bot.command()
 async def example():
-    await bot.say("```^raid \"Canandagua National Bank Clock Tower\" Lugia 5 45\n"
-                  "'gym-name' poke-name level time-remaining```")
+    await bot.say("```^raid \"Canandagua National Bank Clock Tower\" <Lugia/egg> 5 45\n"
+                  "'gym-name' poke-name/egg level time-remaining\n"
+                  "^gym \"Canandagua\"\n"
+                  "^raidcp <mon>\n"
+                  "^version\n"
+                  "^test \"Canandagua National Bank Clock Tower\"```")
 
 @bot.command()
 async def raidcp(arg):

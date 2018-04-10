@@ -11,6 +11,8 @@
 
 - Note: Gym names in raids do not have to be completely filled in, just enough so MySQL can find a single gym.
 
+## This is for STOCK RM only, may or may not work for non stock forks of RM.
+
 ## Commands
 
     ^gym -- show gyms like name provided, also a way to know if they are in the db
@@ -19,10 +21,7 @@
     ^commands -- shows the commands
     ^raidcp -- show the raid cp of specified mon
     ^spawn -- adds spawn of specified pokemon to map. Timer set to 15 minutes as it is unknown.
-
-
-- Mine does not currently do built in raid notifiers sent to discord as an embed. It is currently being worked on on notifier branch.
-
+    ^version -- checks version of current forced API
 
 [Use with NovaBot to get updates to channels of things you report](https://github.com/novskey/novabot/tree/wip)
 
