@@ -45,6 +45,8 @@ async def on_ready():
     print("-----started-----")
     print("The time is now")
     print(datetime.datetime.now())
+    print('Use this link to invite {}:'.format(bot.user.name))
+    print('https://discordapp.com/oauth2/authorize?client_id={}&scope=bot'.format(bot.user.id))
 
 def find_pokemon_id(name):
     if name == 'Nidoran-F':
@@ -71,18 +73,32 @@ def find_pokecp(name):
         return (data[str(name).capitalize()])
 
 #raid function
-@bot.command(pass_context=True)
-async def raid(ctx, arg, arg2, arg3, arg4):#arg = gym name, arg2 = pokemon name, arg3 = level, arg4 = time remaining
-    if ctx and ctx.message.channel.id == str(bot_channel) and str(arg2).lower() in pokemon:
+@bot.command(
+    name='raid',
+    description="Report Raid",
+    pass_context=True
+)
+async def raid(ctx, raid_gym_name, raid_pokemon_name, raid_level, raid_time_remaining):
+    if ctx and ctx.message.channel.id == str(bot_channel) and str(raid_pokemon_name).lower() in pokemon or str(raid_pokemon_name).lower() == "egg":
         """example: ^raid "Canandagua National Bank Clock Tower" Lugia 5 45"""
 
-        pokemon_id = find_pokemon_id(str(arg2).capitalize())
-        pokecp = find_pokecp(str(arg2).capitalize())
-        now = datetime.datetime.utcnow() + timedelta(minutes=int(arg4))
         time = datetime.datetime.utcnow() + timedelta()
 
+        if raid_pokemon_name == "egg":
+            pokemon_id = "NULL"
+            pokecp = "NULL"
+            start = datetime.datetime.utcnow() + timedelta(minutes=int(raid_time_remaining))
+            end = start + timedelta(minutes=int(60))
+            spawn = start - timedelta(minutes=int(60))
+        else:
+            pokemon_id = find_pokemon_id(str(raid_pokemon_name).capitalize())
+            pokecp = find_pokecp(str(raid_pokemon_name).capitalize())
+            end = datetime.datetime.utcnow() + timedelta(minutes=int(raid_time_remaining))
+            start = end - timedelta(minutes=int(60))
+            spawn = start - timedelta(minutes=int(60))
+
         try:
-            cursor.execute("SELECT gym_id FROM gymdetails WHERE name LIKE '%" + str(arg) + "%';")
+            cursor.execute("SELECT gym_id FROM gymdetails WHERE name LIKE '%" + str(raid_gym_name) + "%';")
             gym_id = str(cursor.fetchall())
             gym_id = gym_id.split(',')
             gym_id = gym_id[0].split('((')
@@ -90,25 +106,22 @@ async def raid(ctx, arg, arg2, arg3, arg4):#arg = gym name, arg2 = pokemon name,
                            "gym_id, level, spawn, start, "
                            "end, pokemon_id, cp, move_1, "
                            "move_2, last_scanned)"
-                           " VALUES ("+str('{}').format(gym_id[1])+", "+str(arg3)+", "+str("'{}'").format(time)+", "+str("'{}'").format(time)+", "+str("'{}'").format(now)+", "+str(pokemon_id)+", "+str(pokecp)+", 1, 1, "+str("'{}'").format(time)+");")
-                           #"VALUES (%s, %s, "+str("'{}'").format(time)+", "+str("'{}'").format(time)+", "+str("'{}'").format(now)+", %s, %s, 1, 1, "+str("'{}'").format(time)+");", (str(gym_id[1]), str(pokemon_id), str(arg3), str(arg5)))
+                           " VALUES ("+str('{}').format(gym_id[1])+", "+str(raid_level)+", "+str("'{}'").format(spawn)+", "+str("'{}'").format(start)+", "+str("'{}'").format(end)+", "+str(pokemon_id)+", "+str(pokecp)+", NULL, NULL, "+str("'{}'").format(time)+");")
             cursor.execute("UPDATE gym SET last_modified = '"+str(time)+"', last_scanned = '"+str(time)+"' WHERE gym_id = "+str(gym_id[1])+";")
             database.ping(True)
             database.commit()
             await bot.say('Successfully added your raid to the live map.')
-            await bot.send_message(discord.Object(id=log_channel), str(ctx.message.author.name) + ' said there was a ' + str(arg2) +
-                                   ' raid going on at ' + str(arg)) and print(str(ctx.message.author.name) + ' said there was a ' + str(arg2) +
-                                   ' raid going on at ' + str(arg))
-            #await bot.say("VALUES ("+str('{}').format(gym_id[1])+", "+str(arg3)+", "+str("'{}'").format(time)+", "+str("'{}'").format(time)+", "+str("'{}'").format(now)+", "+str(pokemon_id)+", "+str(pokecp)+", 1, 1, "+str("'{}'").format(time)+");")
-            #await bot.say("UPDATE gym SET last_modified = '"+str(time)+"', last_scanned = '"+str(time)+"' WHERE gym_id = "+str(gym_id[1])+";")
+            await bot.send_message(discord.Object(id=log_channel), str(ctx.message.author.name) + ' said there was a ' + str(raid_pokemon_name) +
+                                   ' raid going on at ' + str(raid_gym_name)) and print(str(ctx.message.author.name) + ' said there was a ' + str(raid_pokemon_name) +
+                                   ' raid going on at ' + str(raid_gym_name))
 
         except:
-            #database.connect()
             database.rollback()
             await bot.say('Unsuccesful in database query, your raid was not added to the live map.')
-            await bot.say("Could not find `{}` in my database. Please check your gym name. \nuse `^gym gym-name` to try and look it up".format(arg))
-            await bot.say("VALUES ("+str('{}').format(gym_id[1])+", "+str(arg3)+", "+str("'{}'").format(time)+", "+str("'{}'").format(time)+", "+str("'{}'").format(now)+", "+str(pokemon_id)+", "+str(pokecp)+", 1, 1, "+str("'{}'").format(time)+");")
-            await bot.say("UPDATE gym SET last_modified = '"+str(time)+"', last_scanned = '"+str(time)+"' WHERE gym_id = "+str(gym_id[1])+";")
+            await bot.say("Could not find `{}` in my database. Please check your gym name. \nuse `^gym gym-name` to try and look it up".format(raid_gym_name))
+            # Uncomment for debug messages
+            #await bot.say("VALUES ("+str('{}').format(gym_id[1])+", "+str(raid_level)+", "+str("'{}'").format(time)+", "+str("'{}'").format(time)+", "+str("'{}'").format(now)+", "+str(pokemon_id)+", "+str(pokecp)+", 1, 1, "+str("'{}'").format(time)+");")
+            #await bot.say("UPDATE gym SET last_modified = '"+str(time)+"', last_scanned = '"+str(time)+"' WHERE gym_id = "+str(gym_id[1])+";")
             tb = traceback.print_exc(file=sys.stdout)
             print(tb)
 
