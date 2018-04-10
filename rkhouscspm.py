@@ -9,7 +9,7 @@ import discord
 from discord.ext import commands
 import asyncio
 from pokemonlist import pokemon, pokejson
-from config import bot_channel, token, host, user, password, database, website, log_channel, spawn_channel
+from config import bot_channel, token, host, user, password, database, website, log_channel, raids_channel, spawn_channel
 from datetime import datetime
 from datetime import timedelta
 import calendar
@@ -182,8 +182,8 @@ async def commands():
 
 @bot.command()
 async def example():
-    await bot.say("```^raid \"Canandagua National Bank Clock Tower\" Lugia 5 45\n"
-                  "'gym-name' poke-name level time-remaining```")
+    await bot.say("^raid \"Canandagua National Bank Clock Tower\" Lugia 5 45\n"
+                  "'gym-name' poke-name level time-remaining\n \n^spawn mew 42.947890 -77.338575\n \n^gym <gym-name>\n \n^raidcp <pokemon-name>```")
 
 @bot.command()
 async def raidcp(arg):
